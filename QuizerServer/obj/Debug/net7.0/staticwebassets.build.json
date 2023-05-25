@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "dv8B6a7nyTq9gIlcR+tLnH+aKw6mRTX+ia9TbnT7fE0=",
+  "Source": "QuizerServer",
+  "BasePath": "_content/QuizerServer",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
