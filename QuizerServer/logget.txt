@@ -594,3 +594,68 @@ Now listening on: http://localhost:5207
 Application started. Press Ctrl+C to shut down.
 Hosting environment: Development
 Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Now listening on: https://localhost:7152
+Now listening on: http://localhost:5207
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Now listening on: https://localhost:7152
+Now listening on: http://localhost:5207
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Now listening on: https://localhost:7152
+Now listening on: http://localhost:5207
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Now listening on: https://localhost:7152
+Now listening on: http://localhost:5207
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Now listening on: https://localhost:7152
+Now listening on: http://localhost:5207
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Now listening on: https://localhost:7152
+Now listening on: http://localhost:5207
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Now listening on: https://localhost:7152
+Now listening on: http://localhost:5207
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Now listening on: https://localhost:7152
+Now listening on: http://localhost:5207
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Now listening on: https://localhost:7152
+Now listening on: http://localhost:5207
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Now listening on: https://localhost:7152
+Now listening on: http://localhost:5207
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Now listening on: https://localhost:7152
+Now listening on: http://localhost:5207
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Now listening on: https://localhost:7152
+Now listening on: http://localhost:5207
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Now listening on: https://localhost:7152
+Now listening on: http://localhost:5207
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer

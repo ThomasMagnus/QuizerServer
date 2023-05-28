@@ -30,9 +30,7 @@ namespace Quizer.Controllers
             try
             {
                 Teacher? data = await HttpContext.Request.ReadFromJsonAsync<Teacher>();
-
                 using TeacherContext teacherContext = new();
-
                 List<Teacher> teacherList = await teacherContext.Teachers.ToListAsync();
 
                 Teacher? teacher = teacherList?.FirstOrDefault(x => x?.fname?.ToLower().Trim() == data?.fname?.ToLower().Trim() &&
@@ -54,8 +52,6 @@ namespace Quizer.Controllers
                 string username = Format("{0} {1} {2}", teacher?.lname?.Trim(), teacher?.fname?.Trim(), teacher?.pname?.Trim());
                 TokenSecurity? tokenSecurity = new(_jwtSettings!, username);
                 string tokenHandler = tokenSecurity?.GetToken()!;
-
-                Console.WriteLine(tokenHandler);
 
                 _teacherPropsHelper!.Value.teacherId = teacher!.id;
 
@@ -111,8 +107,9 @@ namespace Quizer.Controllers
 
         [HttpPost("teacher/addWork")]
         public async Task<IActionResult> AddWork([FromBody] JsonElement value)
-        {
+        {   
             AddWorkBody? data = JsonSerializer.Deserialize<AddWorkBody>(value);
+
             try
             {
                 using TeacherPropsContext teacherPropsContext = new();
@@ -152,7 +149,7 @@ namespace Quizer.Controllers
                     subjectsid = subjects!.Id,
                     groupsid = result.ToArray(),
                 });
-
+                
                 await teacherPropsContext.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -172,7 +169,7 @@ namespace Quizer.Controllers
         }
 
         [HttpGet("teacher/subjects")]
-        public JsonResult GetSubjects() 
+        public JsonResult GetSubjects()
         {
             try
             {
@@ -190,6 +187,33 @@ namespace Quizer.Controllers
                     statusCode = StatusCode(404),
                     message = "Произошла ошибка на сервере при получении предметов!"
                 });
+            }
+        }
+
+        [HttpGet("teacher/preview")]
+        public async Task<IActionResult> GetTasks(string groupName, string subjectName, int teacherId)
+        {
+            using ApplicationContext applicationContext = new();
+            //WriteLine(subjectName);
+            try
+            {
+                List<Subjects> subjectsList = await applicationContext.Subjects.ToListAsync();
+                List<Groups> groupsList = await applicationContext.Groups.ToListAsync();
+                List<Tasks> tasksList = await applicationContext.Tasks.ToListAsync();
+
+                Groups? groups = groupsList.FirstOrDefault(x => x?.Name?.ToLower().Trim() == groupName.ToLower().Trim());
+                Subjects? subjects = subjectsList.FirstOrDefault(x => x?.Name?.ToLower().Trim() == subjectName.ToLower().Trim());
+
+                if (groups is null) return Json("Группа не найдена!");
+                if (subjects is null) return Json("Предмет не найден!");
+
+                IEnumerable<Tasks> tasks = tasksList.Where(x => x.teacherid == teacherId && x.subjectid == subjects?.Id && x.groupid == groups?.Id);
+
+                return Json(tasks);
+            }
+            catch
+            {
+                return Json("Что-то пошло не так");
             }
         }
     }

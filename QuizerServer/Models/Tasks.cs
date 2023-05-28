@@ -23,11 +23,15 @@ namespace Quizer.Models
 
         //[Column("groupid")]
         public int? groupid { get; set; }
+        public int? teacherid { get; set; }
 
         [ForeignKey("subjectid")]
         public Subjects? Subjects { get; set; }
 
         [ForeignKey("groupid")]
         public Groups? Groups { get; set; }
+
+        [ForeignKey("teacherid")]
+        public Teacher? Teacher { get; set; }
     }
 }

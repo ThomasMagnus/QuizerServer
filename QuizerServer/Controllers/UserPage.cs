@@ -31,17 +31,25 @@ namespace Quizer.Controllers
         [HttpGet]
         public IActionResult GetSubjects()
         {
-            using SubjectsContext subjectsContext = new();
-            try
+            _cache.TryGetValue(123, out List<Subjects>? subjects);
+
+            if (subjects is null)
             {
-                List<Subjects>? subjects = subjectsContext?.subjects?.ToList();
-                return Json(subjects);
+                using SubjectsContext subjectsContext = new();
+                try
+                {
+                    subjects = subjectsContext?.subjects?.ToList();
+                    _cache.Set(123, subjects);
+                    return Json(subjects);
+                }
+                catch (Exception ex)
+                {
+                    Console.Write(ex);
+                    return Json("Ошибка запроса");
+                }
             }
-            catch (Exception ex)
-            {
-                Console.Write(ex);
-                return Json("Ошибка запроса");
-            }
+
+            return Json(subjects);
         }
 
         [HttpPost]
@@ -79,31 +87,28 @@ namespace Quizer.Controllers
         [HttpGet]
         public IActionResult GetTasks(int subjectId, int groupId)
         {
-            _cache.TryGetValue(subjectId, out Tasks? task);
+            _cache.TryGetValue(subjectId, out List<Tasks>? tasks);
 
-            if (task is null)
+            if (tasks is null)
             {
                 try
                 {
                     using ApplicationContext applicationContext = new();
-                    List<Tasks>? tasks = applicationContext.Tasks.ToList()
+                    tasks = applicationContext.Tasks.ToList()
                         .Where(x => x.subjectid == subjectId && x.groupid == groupId)
                         .OrderByDescending(x => x?.Putdate).ToList();
 
                     _cache.Set(subjectId, tasks, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(10)));
 
                     return Json(tasks);
-                    //return Json("Запрос успешно прошёл");
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Ошибка в Tasks");
                     Console.WriteLine(ex.ToString());
                     return Json("Произошла ошибка в запросе Tasks");
                 }
             }
-
-            return Json(task);
+            return Json(tasks);
         }
 
     }
