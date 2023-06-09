@@ -2,19 +2,24 @@
 using Quizer.Context;
 using Quizer.Models;
 using Quizer.RequestBody;
+using Quizer.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Quizer.Controllers
 {
+
     [Route("fileSave")]
     public class FileSave : Controller
     {
+        private ApplicationContext _context;
         IConfiguration? _configuration;
         private readonly ILogger<FileSave> _logger;
 
-        public FileSave(IConfiguration? configuration, ILogger<FileSave> logger)
+        public FileSave(IConfiguration? configuration, ILogger<FileSave> logger, ApplicationContext context)
         {
             _configuration = configuration;
             _logger = logger;
+            _context = context;
         }
 
         [HttpPost("save")]
@@ -24,20 +29,19 @@ namespace Quizer.Controllers
             Console.WriteLine(formFile.SubjectName);
             try
             {
-                string? fileDirectory = _configuration?.GetSection("FilePath").Value;
+                //string? fileDirectory = _configuration?.GetSection("FilePath").Value;
+                string? fileDirectory = Directory.GetCurrentDirectory() + "Files";
                 if (formFile is not null)
                 {
                     string file = fileDirectory + formFile?.File?.FileName;
 
-                    using ApplicationContext applicationContext = new();
+                    //List<Groups> groups = await _context.Groups.ToListAsync();
+                    //List<Subjects> subjects = await _context.Subjects.ToListAsync();
 
-                    List<Groups> groups = applicationContext.Groups.ToList();
-                    List<Subjects> subjects = applicationContext.Subjects.ToList();
-
-                    Subjects? subject = subjects
-                        .FirstOrDefault(x => x.Name?.ToLower() == formFile?.SubjectName?.ToLower());
-                    Groups? group = groups
-                        .FirstOrDefault(x => x.Name?.ToLower() == formFile?.GroupName?.ToLower());
+                    Subjects? subject = await _context.Subjects
+                        .FirstOrDefaultAsync(x => x.Name!.ToLower() == formFile!.SubjectName!.ToLower());
+                    Groups? group = await _context.Groups
+                        .FirstOrDefaultAsync(x => x.Name!.ToLower() == formFile!.GroupName!.ToLower());
 
                     if (group is null) return Json(new
                     {
@@ -59,8 +63,8 @@ namespace Quizer.Controllers
                         Putdate = DateTime.UtcNow
                     };
 
-                    await applicationContext.AddAsync(tasks);
-                    await applicationContext.SaveChangesAsync();
+                    await _context.AddAsync(tasks);
+                    await _context.SaveChangesAsync();
 
                     using (FileStream fileStream = new FileStream(file, FileMode.Create))
                     {

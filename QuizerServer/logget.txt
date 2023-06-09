@@ -659,3 +659,631 @@ Now listening on: http://localhost:5207
 Application started. Press Ctrl+C to shut down.
 Hosting environment: Development
 Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Now listening on: https://localhost:7152
+Now listening on: http://localhost:5207
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Now listening on: https://localhost:7152
+Now listening on: http://localhost:5207
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Now listening on: https://localhost:7152
+Now listening on: http://localhost:5207
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Now listening on: https://localhost:7152
+Now listening on: http://localhost:5207
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Now listening on: https://localhost:7152
+Now listening on: http://localhost:5207
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Now listening on: https://localhost:7152
+Now listening on: http://localhost:5207
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Executed DbCommand (114ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        )
+Executed DbCommand (19ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT u."Id", u."Firstname", u."GroupsId", u."Lastname", u."Password", u."Patronymic"
+FROM "Users" AS u
+Executed DbCommand (8ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        )
+An unhandled exception has occurred while executing the request.
+Executed DbCommand (14ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        )
+An unhandled exception has occurred while executing the request.
+Now listening on: https://localhost:7152
+Now listening on: http://localhost:5207
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Now listening on: https://localhost:7152
+Now listening on: http://localhost:5207
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Executed DbCommand (84ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        )
+Executed DbCommand (33ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT ARRAY[g."Name",g."Id"::text]::text[]
+FROM "Groups" AS g
+Now listening on: https://localhost:7152
+Now listening on: http://localhost:5207
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Executed DbCommand (50ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        )
+Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        )
+Failed executing DbCommand (39ms) [Parameters=[@__Trim_0='?', @__Trim_1='?', @__Trim_2='?', @__data_password_3='?'], CommandType='Text', CommandTimeout='30']
+SELECT t.id, t.fname, t.lname, t.login, t.password, t.pname
+FROM "Teacher" AS t
+WHERE btrim(lower(t.fname), E' \t\n\r') = @__Trim_0 AND btrim(lower(t.lname), E' \t\n\r') = @__Trim_1 AND btrim(lower(t.login), E' \t\n\r') = @__Trim_2 AND t.password = @__data_password_3
+LIMIT 1
+An exception occurred while iterating over the results of a query for context type 'Quizer.Context.ApplicationContext'.
+Npgsql.PostgresException (0x80004005): 42P01: отношение "Teacher" не существует
+
+POSITION: 67
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|234_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+  Exception data:
+    Severity: ОШИБКА
+    SqlState: 42P01
+    MessageText: отношение "Teacher" не существует
+    Position: 67
+    File: parse_relation.c
+    Line: 1384
+    Routine: parserOpenTable
+42P01: отношение "Teacher" не существует
+
+POSITION: 67
+Now listening on: https://localhost:7152
+Now listening on: http://localhost:5207
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Executed DbCommand (43ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        )
+Executed DbCommand (28ms) [Parameters=[@__Trim_0='?', @__Trim_1='?', @__Trim_2='?', @__data_password_3='?'], CommandType='Text', CommandTimeout='30']
+SELECT t.id, t.fname, t.lname, t.login, t.password, t.pname
+FROM "Teachers" AS t
+WHERE btrim(lower(t.fname), E' \t\n\r') = @__Trim_0 AND btrim(lower(t.lname), E' \t\n\r') = @__Trim_1 AND btrim(lower(t.login), E' \t\n\r') = @__Trim_2 AND t.password = @__data_password_3
+LIMIT 1
+Executed DbCommand (6ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        )
+Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        )
+Executed DbCommand (3ms) [Parameters=[@__Trim_0='?', @__Trim_1='?', @__Trim_2='?', @__data_password_3='?'], CommandType='Text', CommandTimeout='30']
+SELECT t.id, t.fname, t.lname, t.login, t.password, t.pname
+FROM "Teachers" AS t
+WHERE btrim(lower(t.fname), E' \t\n\r') = @__Trim_0 AND btrim(lower(t.lname), E' \t\n\r') = @__Trim_1 AND btrim(lower(t.login), E' \t\n\r') = @__Trim_2 AND t.password = @__data_password_3
+LIMIT 1
+Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        )
+Now listening on: https://localhost:7152
+Now listening on: http://localhost:5207
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Executed DbCommand (40ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        )
+Executed DbCommand (28ms) [Parameters=[@__Trim_0='?', @__Trim_1='?', @__Trim_2='?', @__data_password_3='?'], CommandType='Text', CommandTimeout='30']
+SELECT t.id, t.fname, t.lname, t.login, t.password, t.pname
+FROM "Teachers" AS t
+WHERE btrim(lower(t.fname), E' \t\n\r') = @__Trim_0 AND btrim(lower(t.lname), E' \t\n\r') = @__Trim_1 AND btrim(lower(t.login), E' \t\n\r') = @__Trim_2 AND t.password = @__data_password_3
+LIMIT 1
+Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        )
+Now listening on: https://localhost:7152
+Now listening on: http://localhost:5207
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Executed DbCommand (44ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        )
+Executed DbCommand (24ms) [Parameters=[@__Trim_0='?', @__Trim_1='?', @__Trim_2='?', @__data_password_3='?'], CommandType='Text', CommandTimeout='30']
+SELECT t.id, t.fname, t.lname, t.login, t.password, t.pname
+FROM "Teachers" AS t
+WHERE btrim(lower(t.fname), E' \t\n\r') = @__Trim_0 AND btrim(lower(t.lname), E' \t\n\r') = @__Trim_1 AND btrim(lower(t.login), E' \t\n\r') = @__Trim_2 AND t.password = @__data_password_3
+LIMIT 1
+The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+Failed executing DbCommand (14ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT t."Id", t."Filename", t."Filepath", t."GroupsId", t."Putdate", t."SubjectsId", t.groupid, t.subjectid, t.teacherid
+FROM "Tasks" AS t
+LIMIT 1
+An exception occurred while iterating over the results of a query for context type 'Quizer.Context.ApplicationContext'.
+Npgsql.PostgresException (0x80004005): 42703: столбец t.GroupsId не существует
+
+POSITION: 44
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|234_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult()
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.<>c.<MoveNext>b__21_0(DbContext _, Enumerator enumerator)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+  Exception data:
+    Severity: ОШИБКА
+    SqlState: 42703
+    MessageText: столбец t.GroupsId не существует
+    Hint: Возможно, предполагалась ссылка на столбец "t.groupid".
+    Position: 44
+    File: parse_relation.c
+    Line: 3599
+    Routine: errorMissingColumn
+42703: столбец t.GroupsId не существует
+
+POSITION: 44
+Now listening on: https://localhost:7152
+Now listening on: http://localhost:5207
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Executed DbCommand (33ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        )
+Executed DbCommand (18ms) [Parameters=[@__Trim_0='?', @__Trim_1='?', @__Trim_2='?', @__data_password_3='?'], CommandType='Text', CommandTimeout='30']
+SELECT t.id, t.fname, t.lname, t.login, t.password, t.pname
+FROM "Teachers" AS t
+WHERE btrim(lower(t.fname), E' \t\n\r') = @__Trim_0 AND btrim(lower(t.lname), E' \t\n\r') = @__Trim_1 AND btrim(lower(t.login), E' \t\n\r') = @__Trim_2 AND t.password = @__data_password_3
+LIMIT 1
+The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+Failed executing DbCommand (13ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT t."Id", t."Filename", t."Filepath", t."GroupsId", t."Putdate", t."SubjectsId", t.groupid, t.subjectid, t.teacherid
+FROM "Tasks" AS t
+LIMIT 1
+An exception occurred while iterating over the results of a query for context type 'Quizer.Context.ApplicationContext'.
+Npgsql.PostgresException (0x80004005): 42703: столбец t.GroupsId не существует
+
+POSITION: 44
+   at Npgsql.Internal.NpgsqlConnector.<ReadMessage>g__ReadMessageLong|234_0(NpgsqlConnector connector, Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult()
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.<>c.<MoveNext>b__21_0(DbContext _, Enumerator enumerator)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+  Exception data:
+    Severity: ОШИБКА
+    SqlState: 42703
+    MessageText: столбец t.GroupsId не существует
+    Hint: Возможно, предполагалась ссылка на столбец "t.groupid".
+    Position: 44
+    File: parse_relation.c
+    Line: 3599
+    Routine: errorMissingColumn
+42703: столбец t.GroupsId не существует
+
+POSITION: 44
+Now listening on: https://localhost:7152
+Now listening on: http://localhost:5207
+Application started. Press Ctrl+C to shut down.
+Hosting environment: Development
+Content root path: C:\Users\emmag\source\repos\QuizerServer\QuizerServer
+Executed DbCommand (34ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        )
+Executed DbCommand (19ms) [Parameters=[@__Trim_0='?', @__Trim_1='?', @__Trim_2='?', @__data_password_3='?'], CommandType='Text', CommandTimeout='30']
+SELECT t.id, t.fname, t.lname, t.login, t.password, t.pname
+FROM "Teachers" AS t
+WHERE btrim(lower(t.fname), E' \t\n\r') = @__Trim_0 AND btrim(lower(t.lname), E' \t\n\r') = @__Trim_1 AND btrim(lower(t.login), E' \t\n\r') = @__Trim_2 AND t.password = @__data_password_3
+LIMIT 1
+The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+Executed DbCommand (5ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+SELECT t."Id", t."Filename", t."Filepath", t."Putdate", t.groupid, t.subjectid, t.teacherid
+FROM "Tasks" AS t
+LIMIT 1
+Executed DbCommand (5ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        )
+Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        )
+Executed DbCommand (3ms) [Parameters=[@__Trim_0='?', @__Trim_1='?', @__Trim_2='?', @__data_password_3='?'], CommandType='Text', CommandTimeout='30']
+SELECT t.id, t.fname, t.lname, t.login, t.password, t.pname
+FROM "Teachers" AS t
+WHERE btrim(lower(t.fname), E' \t\n\r') = @__Trim_0 AND btrim(lower(t.lname), E' \t\n\r') = @__Trim_1 AND btrim(lower(t.login), E' \t\n\r') = @__Trim_2 AND t.password = @__data_password_3
+LIMIT 1
+Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        )
+Executed DbCommand (3ms) [Parameters=[@__Trim_0='?', @__Trim_1='?', @__Trim_2='?', @__data_password_3='?'], CommandType='Text', CommandTimeout='30']
+SELECT t.id, t.fname, t.lname, t.login, t.password, t.pname
+FROM "Teachers" AS t
+WHERE btrim(lower(t.fname), E' \t\n\r') = @__Trim_0 AND btrim(lower(t.lname), E' \t\n\r') = @__Trim_1 AND btrim(lower(t.login), E' \t\n\r') = @__Trim_2 AND t.password = @__data_password_3
+LIMIT 1
+Value cannot be null. (Parameter 'source')
+Executed DbCommand (3ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        )
+Executed DbCommand (2ms) [Parameters=[@__Trim_0='?', @__Trim_1='?', @__Trim_2='?', @__data_password_3='?'], CommandType='Text', CommandTimeout='30']
+SELECT t.id, t.fname, t.lname, t.login, t.password, t.pname
+FROM "Teachers" AS t
+WHERE btrim(lower(t.fname), E' \t\n\r') = @__Trim_0 AND btrim(lower(t.lname), E' \t\n\r') = @__Trim_1 AND btrim(lower(t.login), E' \t\n\r') = @__Trim_2 AND t.password = @__data_password_3
+LIMIT 1
+Executed DbCommand (6ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+
+SELECT CASE WHEN COUNT(*) = 0 THEN FALSE ELSE TRUE END
+FROM pg_class AS cls
+JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+WHERE
+        cls.relkind IN ('r', 'v', 'm', 'f', 'p') AND
+        ns.nspname NOT IN ('pg_catalog', 'information_schema') AND
+        -- Exclude tables which are members of PG extensions
+        NOT EXISTS (
+            SELECT 1 FROM pg_depend WHERE
+                classid=(
+                    SELECT cls.oid
+                    FROM pg_class AS cls
+                             JOIN pg_namespace AS ns ON ns.oid = cls.relnamespace
+                    WHERE relname='pg_class' AND ns.nspname='pg_catalog'
+                ) AND
+                objid=cls.oid AND
+                deptype IN ('e', 'x')
+        )

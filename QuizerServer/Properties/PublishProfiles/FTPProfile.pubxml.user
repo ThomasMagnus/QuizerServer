@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAASGRPgU+ipEOuO5z6mSK+LwAAAAACAAAAAAAQZgAAAAEAACAAAABKaVNk9tlD9IRboFmKKTTAtREud5626vi/bpAB71mYXwAAAAAOgAAAAAIAACAAAAB/3PO28cPtSK98mulAv++GxTVxhB3zKWof3GoL0Gu7OzAAAAAHa4pVIuzj39g3Vm+h+A2PBXR9U6Fn2KmtTYJh0+JK3XtHeNhGx5oISpwQfhJjVzdAAAAAwmZSqzmf3yrouQfh/6pGiKQvsEDiRN3qiFvA3+jjbndpkNZsRlLyHffl+rYLZwyZ8aNuEIKP5Rfuj1t7LPrR4g==</EncryptedPassword>
+    <_PublishTargetUrl>ftp://31.31.198.61/maghost.ru</_PublishTargetUrl>
+    <History>True|2023-06-05T19:44:46.9504396Z;True|2023-06-05T21:06:21.3602696+03:00;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="appsettings.Development.json">
+      <publishTime>05/12/2023 08:53:35</publishTime>
+    </File>
+    <File Include="appsettings.json">
+      <publishTime>05/06/2023 20:39:27</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.Authentication.JwtBearer.dll">
+      <publishTime>03/25/2023 05:42:26</publishTime>
+    </File>
+    <File Include="Microsoft.EntityFrameworkCore.Abstractions.dll">
+      <publishTime>03/15/2023 21:09:24</publishTime>
+    </File>
+    <File Include="Microsoft.EntityFrameworkCore.dll">
+      <publishTime>03/15/2023 21:09:42</publishTime>
+    </File>
+    <File Include="Microsoft.EntityFrameworkCore.Relational.dll">
+      <publishTime>03/15/2023 21:09:50</publishTime>
+    </File>
+    <File Include="Microsoft.IdentityModel.JsonWebTokens.dll">
+      <publishTime>01/20/2022 01:27:34</publishTime>
+    </File>
+    <File Include="Microsoft.IdentityModel.Logging.dll">
+      <publishTime>01/20/2022 01:29:28</publishTime>
+    </File>
+    <File Include="Microsoft.IdentityModel.Protocols.dll">
+      <publishTime>01/20/2022 01:30:48</publishTime>
+    </File>
+    <File Include="Microsoft.IdentityModel.Protocols.OpenIdConnect.dll">
+      <publishTime>01/20/2022 01:38:34</publishTime>
+    </File>
+    <File Include="Microsoft.IdentityModel.Tokens.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="Npgsql.dll">
+      <publishTime>04/24/2023 17:12:08</publishTime>
+    </File>
+    <File Include="Npgsql.EntityFrameworkCore.PostgreSQL.dll">
+      <publishTime>04/24/2023 18:22:08</publishTime>
+    </File>
+    <File Include="QuizerServer.deps.json">
+      <publishTime>06/05/2023 22:44:22</publishTime>
+    </File>
+    <File Include="QuizerServer.dll">
+      <publishTime>06/05/2023 22:44:22</publishTime>
+    </File>
+    <File Include="QuizerServer.exe">
+      <publishTime>06/05/2023 22:44:22</publishTime>
+    </File>
+    <File Include="QuizerServer.pdb">
+      <publishTime>06/05/2023 22:44:22</publishTime>
+    </File>
+    <File Include="QuizerServer.runtimeconfig.json">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="System.IdentityModel.Tokens.Jwt.dll">
+      <publishTime>01/20/2022 01:26:14</publishTime>
+    </File>
+    <File Include="web.config">
+      <publishTime>06/05/2023 22:44:42</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

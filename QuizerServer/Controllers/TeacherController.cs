@@ -13,7 +13,6 @@ using static System.String;
 
 namespace Quizer.Controllers
 {
-
     public class TeacherController : Controller
     {
         private readonly JwtSettings? _jwtSettings;
@@ -21,8 +20,12 @@ namespace Quizer.Controllers
         private Lazy<TeacherPropsHelper>? _teacherPropsHelper = new Lazy<TeacherPropsHelper>();
         private ISubjectsProps _subjectsProps;
         private GroupsServices? groupsServices;
-        public TeacherController(IOptions<JwtSettings> jwtSettings, ILogger<TeacherController> logger, ISubjectsProps subjectsProps) => 
-            (_jwtSettings, _logger, _subjectsProps) = (jwtSettings?.Value, logger, subjectsProps);
+
+        private ApplicationContext _context;
+
+        public TeacherController(IOptions<JwtSettings> jwtSettings, ILogger<TeacherController> logger, ISubjectsProps subjectsProps, 
+            ApplicationContext context) => 
+            (_jwtSettings, _logger, _subjectsProps, _context) = (jwtSettings?.Value, logger, subjectsProps, context);
 
         [HttpPost, Route("Teacher/Index")]
         public async Task<IActionResult> Index()
@@ -30,13 +33,11 @@ namespace Quizer.Controllers
             try
             {
                 Teacher? data = await HttpContext.Request.ReadFromJsonAsync<Teacher>();
-                using TeacherContext teacherContext = new();
-                List<Teacher> teacherList = await teacherContext.Teachers.ToListAsync();
 
-                Teacher? teacher = teacherList?.FirstOrDefault(x => x?.fname?.ToLower().Trim() == data?.fname?.ToLower().Trim() &&
-                                                                x?.lname?.ToLower().Trim() == data?.lname?.ToLower().Trim() &&
-                                                                x?.login?.ToLower().Trim() == data?.login?.ToLower().Trim() &&
-                                                                x?.password == data?.password);
+                Teacher? teacher = await _context.Teachers.FirstOrDefaultAsync(x => x.fname!.ToLower().Trim() == data!.fname!.ToLower().Trim() &&
+                                                                x.lname!.ToLower().Trim() == data.lname!.ToLower().Trim() &&
+                                                                x.login!.ToLower().Trim() == data.login!.ToLower().Trim() &&
+                                                                x.password == data.password);
 
                 if (teacher is null)
                 {
@@ -48,6 +49,12 @@ namespace Quizer.Controllers
 
                     return Json(response);
                 }
+
+                Tasks? tasks = _context?.Tasks?.FirstOrDefault();
+
+                WriteLine("--------------");
+                WriteLine(tasks?.Teachers.fname);
+                WriteLine("--------------");
 
                 string username = Format("{0} {1} {2}", teacher?.lname?.Trim(), teacher?.fname?.Trim(), teacher?.pname?.Trim());
                 TokenSecurity? tokenSecurity = new(_jwtSettings!, username);
@@ -194,7 +201,7 @@ namespace Quizer.Controllers
         public async Task<IActionResult> GetTasks(string groupName, string subjectName, int teacherId)
         {
             using ApplicationContext applicationContext = new();
-            //WriteLine(subjectName);
+            WriteLine(teacherId);
             try
             {
                 List<Subjects> subjectsList = await applicationContext.Subjects.ToListAsync();

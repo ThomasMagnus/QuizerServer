@@ -10,10 +10,12 @@ namespace Quizer.Controllers
     public class UserPage : Controller
     {
         IMemoryCache _cache;
+        ApplicationContext _context;
 
-        public UserPage(IMemoryCache cache)
+        public UserPage(IMemoryCache cache, ApplicationContext context)
         {
             _cache = cache;
+            _context = context;
         }
 
         [HttpGet, Route("[controller]/Index")]
@@ -108,6 +110,7 @@ namespace Quizer.Controllers
                     return Json("Произошла ошибка в запросе Tasks");
                 }
             }
+
             return Json(tasks);
         }
 

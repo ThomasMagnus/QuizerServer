@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Quizer.Context;
 using Quizer.IServices;
 using Quizer.Models;
 using Quizer.Services;
@@ -8,10 +10,14 @@ using QuizerServer.HelperClasses;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-//builder.Services.AddTransient<IServiceCollection, ServiceCollection>();
 builder.Services.AddScoped<ISubjectsProps, SubjectsProps>();
 
+string? connectionString = builder.Configuration.GetConnectionString("ConnectionStrings");
+
+builder.Services.AddDbContext<ApplicationContext>(options => options.UseNpgsql(connectionString));
+
 builder.Logging.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logget.txt"));
+
 ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
 ILogger<Program> logger = loggerFactory.CreateLogger<Program>();
 

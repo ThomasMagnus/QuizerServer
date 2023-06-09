@@ -18,11 +18,13 @@ namespace Quizer.Models
 
         [Column("Putdate")]
         public DateTime? Putdate { get; set; }
-        //[Column("subjectid")]
+        [Column("subjectid")]
         public int? subjectid { get; set; }
 
-        //[Column("groupid")]
+        [Column("groupid")]
         public int? groupid { get; set; }
+
+        [Column("teacherid")]
         public int? teacherid { get; set; }
 
         [ForeignKey("subjectid")]
@@ -32,6 +34,6 @@ namespace Quizer.Models
         public Groups? Groups { get; set; }
 
         [ForeignKey("teacherid")]
-        public Teacher? Teacher { get; set; }
+        public Teacher? Teachers { get; set; }
     }
 }

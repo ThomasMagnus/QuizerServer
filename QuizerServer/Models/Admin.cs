@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Quizer.Context;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Quizer.Models
@@ -16,12 +14,4 @@ namespace Quizer.Models
         public string? Email { get; set; }
         public string? Password { get; set; }
     }
-
-    public class AdminsContext : ApplicationContext
-    {
-        public DbSet<Admin> Admin {get; set;}
-        public AdminsContext()
-            : base() { }
-    }
-
 }

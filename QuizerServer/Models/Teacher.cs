@@ -17,11 +17,12 @@ namespace Quizer.Models
         public string? pname { get; set; }
         public string? login { get; set; }
         public string? password { get; set; }
+        public virtual ICollection<Tasks>? Tasks { get; set; }
     }
 
     public class TeacherContext : ApplicationContext
     {
-        public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<Teacher>? Teachers { get; set; }
 
         public TeacherContext()
             : base() { }

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using Quizer.Context;
 using Microsoft.AspNetCore.Authorization;
 using QuizerServer.HelperClasses;
+using Microsoft.EntityFrameworkCore;
 
 namespace Quizer.Controllers;
 
@@ -14,20 +15,19 @@ public class Authorization : Controller
     private readonly JwtSettings _options;
     private string? _token;
     private readonly ILogger<Authorization> _logger;
+    private ApplicationContext _context;
 
-    public Authorization(IOptions<JwtSettings> options, ILogger<Authorization> logger)
+    public Authorization(IOptions<JwtSettings> options, ILogger<Authorization> logger, ApplicationContext context)
     {
         _logger = logger;
         _options = options.Value;
+        _context = context;
     }
 
     [HttpPost, Route("Auth")]
     public async Task<IActionResult>? Auth()
     {
-        using ApplicationContext applicationContext = new();
-        using SubjectsContext subjectsContext = new();
-
-        UsersServices usersServices = new() { db = applicationContext };
+        UsersServices usersServices = new() { db = _context };
 
         try
         {
@@ -54,14 +54,14 @@ public class Authorization : Controller
             }
             else
             {
-                GroupsServices groupsServices = new GroupsServices { db = applicationContext };
+                GroupsServices groupsServices = new GroupsServices { db = _context };
 
                 List<Groups> groupsList = await groupsServices.EntityLIst();
                 
                 string username = $"{person?.Firstname?.Replace(" ", "")} " +
                                                     $"{person?.Lastname?.Replace(" ", "")}";
 
-                List<Subjects> subjectsList = subjectsContext.subjects!.ToList();
+                List<Subjects> subjectsList = await _context.Subjects!.ToListAsync();
                 TokenSecurity tokenSecurity = new(_options, username);
 
                 _token = tokenSecurity.GetToken();
@@ -96,20 +96,18 @@ public class Authorization : Controller
     }
 
     [HttpGet, Route("GetGroups")]
-    public JsonResult? GetGroups()
+    public async Task<JsonResult>? GetGroups()
     {
         try
         {
-            using ApplicationContext grpoupsContext = new();
-            List<Groups>? groups = grpoupsContext.Groups?.ToList();
-            string[][]? groupsName = groups?.Select(x => new string[] {x?.Name!, x?.Id.ToString()!}).ToArray();
+            string[][]? groupsName = _context.Groups.Select(x => new string[] { x.Name!, x.Id.ToString()! }).ToArray();
 
             return Json(groupsName);
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex);
-            return null;
+            return Json("");
         }
     }
 
