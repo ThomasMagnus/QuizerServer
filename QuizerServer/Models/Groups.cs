@@ -1,14 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Quizer.Context;
 using QuizerServer.HelperInterfaces;
+using QuizerServer.Models;
 
 namespace Quizer.Models;
 
-public class Groups
+public class Groups : BaseModel
 {
-    public int Id { get; set; }
     public string? Name { get; set; }
-    public List<Users>? Users { get; set; } = new();
+    public ICollection<Users>? Users { get; set; }
+    public ICollection<Tasks>? Tasks { get; set; }
 }
 
 public class GroupsServices : IServices<Groups>

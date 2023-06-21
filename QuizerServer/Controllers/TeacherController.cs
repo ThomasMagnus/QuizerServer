@@ -34,7 +34,9 @@ namespace Quizer.Controllers
             {
                 Teacher? data = await HttpContext.Request.ReadFromJsonAsync<Teacher>();
 
-                Teacher? teacher = await _context.Teachers.FirstOrDefaultAsync(x => x.fname!.ToLower().Trim() == data!.fname!.ToLower().Trim() &&
+                Teacher? teacher = await _context.Teachers.Include(t => t.Tasks)
+                                                          .FirstOrDefaultAsync(
+                                                                x => x.fname!.ToLower().Trim() == data!.fname!.ToLower().Trim() &&
                                                                 x.lname!.ToLower().Trim() == data.lname!.ToLower().Trim() &&
                                                                 x.login!.ToLower().Trim() == data.login!.ToLower().Trim() &&
                                                                 x.password == data.password);
@@ -50,19 +52,14 @@ namespace Quizer.Controllers
                     return Json(response);
                 }
 
-                Tasks? tasks = _context?.Tasks?.FirstOrDefault();
-
-                WriteLine("--------------");
-                WriteLine(tasks?.Teachers.fname);
-                WriteLine("--------------");
-
                 string username = Format("{0} {1} {2}", teacher?.lname?.Trim(), teacher?.fname?.Trim(), teacher?.pname?.Trim());
                 TokenSecurity? tokenSecurity = new(_jwtSettings!, username);
                 string tokenHandler = tokenSecurity?.GetToken()!;
 
+                _teacherPropsHelper!.Value.ContextName = _context;
                 _teacherPropsHelper!.Value.teacherId = teacher!.id;
 
-                Dictionary<string, string[]> teacherProps = _teacherPropsHelper!.Value.GetTeacherProps();
+                Dictionary<string, string[]> teacherProps = await _teacherPropsHelper!.Value.GetTeacherProps();
 
                 var dataAnswer = new
                 {
@@ -94,20 +91,25 @@ namespace Quizer.Controllers
 
         [HttpDelete]
         [Route("teacher/deleteGroup"), Route("teacher/deleteSubject")]
-        public IActionResult DeleteProps([FromBody] JsonElement value)
+        public async Task<IActionResult> DeleteProps([FromBody] JsonElement value)
         {
             Dictionary<string, string>? data = JsonSerializer.Deserialize<Dictionary<string, string>>(value);
             if (data is null) return Json("Данные не получены");
 
             _teacherPropsHelper!.Value.ContextName = new ApplicationContext();
 
-            if (HttpContext.Request.Path == "/teacher/deleteSubject") _teacherPropsHelper!.Value.DeleteSubject(data["subjectName"], int.Parse(data["userId"]));
-            else if (HttpContext.Request.Path == "/teacher/deleteGroup") _teacherPropsHelper!.Value.DeleteGroup(data["groupName"], 
-                data["subjectName"], int.Parse(data["userId"]));
+            if (HttpContext.Request.Path == "/teacher/deleteSubject")
+            {
+                await _teacherPropsHelper!.Value.DeleteSubject(data["subjectName"], int.Parse(data["userId"]));
+            }
+            else if (HttpContext.Request.Path == "/teacher/deleteGroup")
+            {
+                await _teacherPropsHelper!.Value.DeleteGroup(data["groupName"], data["subjectName"], int.Parse(data["userId"]));
+            }
 
             _teacherPropsHelper!.Value.teacherId = int.Parse(data["userId"]);
 
-            Dictionary<string, string[]> teacherProps = _teacherPropsHelper!.Value.GetTeacherProps();
+            Dictionary<string, string[]> teacherProps = await _teacherPropsHelper!.Value.GetTeacherProps();
 
             return Json(teacherProps);
         }
@@ -120,10 +122,10 @@ namespace Quizer.Controllers
             try
             {
                 using TeacherPropsContext teacherPropsContext = new();
-                using SubjectsContext subjectsContext = new();
+
                 groupsServices = new() { db = new ApplicationContext() };
                 
-                List<Subjects>? subjectsList = await subjectsContext?.subjects?.ToListAsync()!;
+                List<Subjects>? subjectsList = await _context?.Subjects?.ToListAsync()!;
                 List<Groups>? groupsList = await groupsServices.EntityLIst();
 
                 Subjects? subjects = subjectsList.FirstOrDefault(x => x.Name?.ToLower() == data?.subject?.ToLower());
@@ -142,7 +144,7 @@ namespace Quizer.Controllers
                 foreach (string item in data!.groups!) {
                     Groups? groups = groupsList!.FirstOrDefault(x => x.Name?.Replace(" ", "") == item.ToUpper());
 
-                    if (groups is null) return Json(new { 
+                    if (groups is null) return Json(new {
                         statusCode = StatusCode(404),
                         message = $"Группа: {item} не найдена!",
                     });
@@ -167,7 +169,7 @@ namespace Quizer.Controllers
             _teacherPropsHelper!.Value.ContextName = new ApplicationContext();
 
             _teacherPropsHelper!.Value.teacherId = int.Parse((data?.teacherId)?.ToString()!);
-            Dictionary<string, string[]> teacherProps = _teacherPropsHelper!.Value.GetTeacherProps();
+            Dictionary<string, string[]> teacherProps = await _teacherPropsHelper!.Value.GetTeacherProps();
 
             return Json(new {
                 statusCode = 200,
@@ -190,6 +192,7 @@ namespace Quizer.Controllers
             catch (Exception ex) {
                 WriteLine("Неизвестная ошибка!");
                 _logger.LogError("Ошибка на сервере: {0}", ex.Message);
+
                 return Json(new { 
                     statusCode = StatusCode(404),
                     message = "Произошла ошибка на сервере при получении предметов!"
@@ -200,26 +203,29 @@ namespace Quizer.Controllers
         [HttpGet("teacher/preview")]
         public async Task<IActionResult> GetTasks(string groupName, string subjectName, int teacherId)
         {
-            using ApplicationContext applicationContext = new();
-            WriteLine(teacherId);
             try
             {
-                List<Subjects> subjectsList = await applicationContext.Subjects.ToListAsync();
-                List<Groups> groupsList = await applicationContext.Groups.ToListAsync();
-                List<Tasks> tasksList = await applicationContext.Tasks.ToListAsync();
+                ApplicationContext applicationContext = new();
 
-                Groups? groups = groupsList.FirstOrDefault(x => x?.Name?.ToLower().Trim() == groupName.ToLower().Trim());
-                Subjects? subjects = subjectsList.FirstOrDefault(x => x?.Name?.ToLower().Trim() == subjectName.ToLower().Trim());
+                Groups? groups = await applicationContext.Groups
+                                               .FirstOrDefaultAsync(x => x.Name!.ToLower().Trim() == groupName.ToLower().Trim());
 
                 if (groups is null) return Json("Группа не найдена!");
+
+                Subjects? subjects = await applicationContext.Subjects
+                                                   .FirstOrDefaultAsync(x => x.Name!.ToLower().Trim() == subjectName.ToLower().Trim());
                 if (subjects is null) return Json("Предмет не найден!");
 
-                IEnumerable<Tasks> tasks = tasksList.Where(x => x.teacherid == teacherId && x.subjectid == subjects?.Id && x.groupid == groups?.Id);
+                List<Tasks> tasks = await _context.Tasks
+                                                  .Where(x => x.teacherid == teacherId && x.subjectid == subjects.Id && x.groupid == groups.Id)
+                                                  .ToListAsync();
 
-                return Json(tasks);
+                return Json(tasks.AsReadOnly());
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
+                _logger.LogError(ex.StackTrace);
                 return Json("Что-то пошло не так");
             }
         }

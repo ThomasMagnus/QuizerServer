@@ -11,12 +11,8 @@ namespace Quizer.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string? Name { get; set; }
+        public ICollection<Tasks>? Tasks { get; set; }
+        public ICollection<TeacherProps>? TeacherProps { get; set; }
     }
 
-    public class SubjectsContext : ApplicationContext
-    {
-        public DbSet<Subjects>? subjects { get; set; }
-        public SubjectsContext()
-            :base() {}
-    }
 }

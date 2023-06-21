@@ -18,6 +18,7 @@ namespace Quizer.Models
         public string? login { get; set; }
         public string? password { get; set; }
         public virtual ICollection<Tasks>? Tasks { get; set; }
+        public virtual ICollection<TeacherProps>? TeacherProps { get; set; }
     }
 
     public class TeacherContext : ApplicationContext

@@ -1,14 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using QuizerServer.Models;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Quizer.Models
 {
     [Table("Tasks")]
-    public class Tasks
+    public class Tasks : BaseModel
     { 
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
 
         [Column("Filepath")]
         public string? Filepath { get; set; }
@@ -18,6 +16,7 @@ namespace Quizer.Models
 
         [Column("Putdate")]
         public DateTime? Putdate { get; set; }
+
         [Column("subjectid")]
         public int? subjectid { get; set; }
 

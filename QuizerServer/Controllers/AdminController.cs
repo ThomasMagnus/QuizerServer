@@ -19,7 +19,7 @@ namespace Quizer.Controllers
         {
             Dictionary<string, string>? data = JsonSerializer.Deserialize<Dictionary<string, string>>(value);
 
-            Admin? admin = await _context.Admin.FirstOrDefaultAsync(x => x.FName!.ToLower().Replace(" ", "") == data["firstname"].Trim() 
+            Admin? admin = await _context.Admin.FirstOrDefaultAsync(x => x.FName!.ToLower().Replace(" ", "") == data!["firstname"].Trim() 
                                                     && x.LName!.ToLower().Replace(" ", "") == data["lastname"].Trim()
                                                     && x.Login!.ToLower().Replace(" ", "") == data["login"].Trim()
                                                     && x.Password!.Replace(" ", "") == data["password"].Replace(" ", ""));
@@ -33,8 +33,6 @@ namespace Quizer.Controllers
             {
                 accessAdminToken = tokenHandler,
                 username = tokenSecurity._claimsCreator.GetClaims().Name,
-                admin?.id
-
             };
 
             return Json(response);

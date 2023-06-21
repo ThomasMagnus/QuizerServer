@@ -1,4 +1,5 @@
-﻿using Quizer.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using Quizer.Context;
 using Quizer.Models;
 using QuizerServer.HelperInterfaces;
 
@@ -13,64 +14,68 @@ namespace QuizerServer.HelperClasses
         {
             set => _applicationContext = value;
         }
-        public Dictionary<string, string[]> GetTeacherProps()
+        public async Task<Dictionary<string, string[]>> GetTeacherProps()
         {
             Dictionary<string, List<string>> teacherProps = new();
-
-            using TeacherPropsContext teacherPropsContext = new();
             using TeacherContext teacherContext = new();
-            using SubjectsContext subjectsContext = new();
 
-            List<TeacherProps> teacherPropsList = teacherPropsContext.TeacherProps.Where(x => x.teacherid == teacherId).OrderBy(x => x.id).ToList();
-            List<Subjects>? subjectsList = subjectsContext?.subjects?.ToList();
-            List<Groups> groupsList = new GroupsServices() { db = new ApplicationContext() }.EntityLIst().Result;
+            List<TeacherProps>? teacherPropsList = await _applicationContext!.TeacherProps
+                                                                            .Include(x => x.Subjects)
+                                                                            .Where(x => x.teacherid == teacherId).OrderBy(x => x.id)
+                                                                            .ToListAsync();
 
-            List<string>? subjects = new();
+            List<Groups> groupsList = new GroupsServices() { db = _applicationContext }.EntityLIst().Result;
             List<string>? groups = new();
 
             Dictionary<string, string[]> keyValuePairs = new Dictionary<string, string[]>();
 
             foreach (TeacherProps? item in teacherPropsList)
             {
-                Subjects? subject = subjectsList?.FirstOrDefault(x => x?.Id == item?.subjectsid);
-
-                string[] groupsArray = item.groupsid!.SelectMany(x => groupsList.Where(y => x == y?.Id).Select(x => x.Name)).ToArray()!;
-
-                keyValuePairs[subject?.Name!] = groupsArray;
+                string[] groupsArray = item.groupsid!
+                                            .SelectMany(x => groupsList
+                                                            .Where(y => x == y?.Id)
+                                                            .Select(x => x.Name))
+                                            .ToArray()!;
+                keyValuePairs[item.Subjects?.Name!] = groupsArray;
             }
             return keyValuePairs;
         }
 
-        public async void DeleteSubject(string props, int teacherId)
+        public async Task DeleteSubject(string props, int teacherId)
         {
-            using TeacherPropsContext teacherPropsContext = new();
-            using SubjectsContext subjectsContext = new();
-
-            Subjects? subjects = subjectsContext?.subjects?.AsQueryable().FirstOrDefault(x => x.Name == props);
-            TeacherProps? teacherProps = teacherPropsContext?.TeacherProps?.FirstOrDefault(x => x!.subjectsid == subjects!.Id && x!.teacherid == teacherId);
+            Subjects? subjects = _applicationContext?.Subjects?.AsQueryable().FirstOrDefault(x => x.Name == props);
+            
+            TeacherProps? teacherProps = await _applicationContext!.TeacherProps
+                                                                   .Include(x => x.Subjects)               
+                                                                   .FirstOrDefaultAsync(
+                                                                        x => x!.subjectsid == subjects!.Id && x!.teacherid == teacherId);
 
             if (teacherProps is not null)
             {
-                teacherPropsContext?.Remove(teacherProps!);
-                await teacherPropsContext?.SaveChangesAsync()!;
+                _applicationContext?.Remove(teacherProps!);
+                await _applicationContext?.SaveChangesAsync()!;
             }
             else Console.WriteLine("Предмет не найден!");
         }
-        public async void DeleteGroup(string groupName, string subjectName, int teacherId)
+        public async Task DeleteGroup(string groupName, string subjectName, int teacherId)
         {
-            using TeacherPropsContext teacherPropsContext = new();
-            using SubjectsContext subjectsContext = new();
             GroupsServices groupsServices = new GroupsServices() { db = _applicationContext };
 
-            Subjects? subjects = subjectsContext?.subjects?.AsQueryable().FirstOrDefault(x => x.Name == subjectName);
+            Subjects? subjects = await _applicationContext!.Subjects
+                                                     .AsQueryable()
+                                                     .FirstOrDefaultAsync(x => x.Name == subjectName);
+
             List<Groups> groupsList = await groupsServices.EntityLIst();
-            TeacherProps? teacherProps = teacherPropsContext?.TeacherProps?.FirstOrDefault(x => x!.subjectsid == subjects!.Id && x.teacherid == teacherId);
+            TeacherProps? teacherProps = await _applicationContext!.TeacherProps
+                                                             .FirstOrDefaultAsync(x => x!.subjectsid == subjects!.Id && x.teacherid == teacherId);
 
             Groups? groups = await groupsServices.GetEntity(new Dictionary<string, object> { { "name", groupName } });
 
-            teacherProps!.groupsid = teacherProps.groupsid?.Where(x => x != groups?.Id).ToArray();
+            teacherProps!.groupsid = teacherProps.groupsid?
+                                                 .Where(x => x != groups?.Id)
+                                                 .ToArray();
 
-            await teacherPropsContext?.SaveChangesAsync()!;
+            await _applicationContext?.SaveChangesAsync()!;
         }
     }
 }

@@ -25,51 +25,55 @@ namespace Quizer.Controllers
         [HttpPost("save")]
         public async Task<IActionResult> Index([FromForm] FileModel formFile)
         {
-            Console.WriteLine(formFile.GroupName);
-            Console.WriteLine(formFile.SubjectName);
             try
             {
-                //string? fileDirectory = _configuration?.GetSection("FilePath").Value;
-                string? fileDirectory = Directory.GetCurrentDirectory() + "Files";
-                if (formFile is not null)
+                string? fileDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Files");
+
+                if (formFile is null)
                 {
-                    string file = fileDirectory + formFile?.File?.FileName;
-
-                    //List<Groups> groups = await _context.Groups.ToListAsync();
-                    //List<Subjects> subjects = await _context.Subjects.ToListAsync();
-
-                    Subjects? subject = await _context.Subjects
-                        .FirstOrDefaultAsync(x => x.Name!.ToLower() == formFile!.SubjectName!.ToLower());
-                    Groups? group = await _context.Groups
-                        .FirstOrDefaultAsync(x => x.Name!.ToLower() == formFile!.GroupName!.ToLower());
-
-                    if (group is null) return Json(new
+                    return Json(new
                     {
-                        StatusCode = 404,
-                        Message = $"Группа: {formFile?.GroupName} в базе не найдена!"
+                        message = "Файл не нейден!",
+                        StatusCode = 400
                     });
-                    else if(subject is null) return Json(new
-                    {
-                        StatusCode = 404,
-                        Message = $"Предмет: {formFile?.SubjectName} в базе не найден!"
-                    });
+                }
 
-                    Tasks tasks = new Tasks
-                    {
-                        Filepath = file,
-                        Filename = formFile?.File?.FileName,
-                        subjectid = subject?.Id,
-                        groupid = group?.Id,
-                        Putdate = DateTime.UtcNow
-                    };
+                string file = Path.Combine(fileDirectory, formFile.File!.FileName);
 
-                    await _context.AddAsync(tasks);
-                    await _context.SaveChangesAsync();
+                Groups? group = await _context.Groups
+                    .FirstOrDefaultAsync(x => x.Name!.ToLower() == formFile!.GroupName!.ToLower());
 
-                    using (FileStream fileStream = new FileStream(file, FileMode.Create))
-                    {
-                        await formFile?.File?.CopyToAsync(fileStream)!;
-                    }
+                if (group is null) return Json(new
+                {
+                    StatusCode = 404,
+                    Message = $"Группа: {formFile.GroupName} в базе не найдена!"
+                });
+
+
+                Subjects? subject = await _context.Subjects
+                    .FirstOrDefaultAsync(x => x.Name!.ToLower() == formFile!.SubjectName!.ToLower());
+
+                if (subject is null) return Json(new
+                {
+                    StatusCode = 404,
+                    Message = $"Предмет: {formFile.SubjectName} в базе не найден!"
+                });
+
+                Tasks tasks = new Tasks
+                {
+                    Filepath = file,
+                    Filename = formFile?.File?.FileName,
+                    subjectid = subject?.Id,
+                    groupid = group?.Id,
+                    Putdate = DateTime.UtcNow
+                };
+
+                await _context.AddAsync(tasks);
+                await _context.SaveChangesAsync();
+
+                using (FileStream fileStream = new FileStream(file, FileMode.Create))
+                {
+                    await formFile?.File?.CopyToAsync(fileStream)!;
                 }
 
                 return Json(new

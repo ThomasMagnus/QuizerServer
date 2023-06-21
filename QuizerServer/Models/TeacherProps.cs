@@ -13,6 +13,12 @@ namespace Quizer.Models
         public int subjectsid { get; set; }
         public int[]? groupsid { get; set; }
         public int teacherid { get; set; }
+
+        [ForeignKey("teacherid")]
+        public Teacher? Teacher { get; set; }
+
+        [ForeignKey("subjectsid")]
+        public Subjects? Subjects { get; set; }
     }
 
     public class TeacherPropsContext : ApplicationContext

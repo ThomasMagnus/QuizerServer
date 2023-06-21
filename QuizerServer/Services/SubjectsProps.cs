@@ -7,9 +7,9 @@ namespace Quizer.Services
     public class SubjectsProps : ISubjectsProps
     {
         public List<Subjects> GetSubjectsList() {
-            using SubjectsContext subjectsContext = new();
+            using ApplicationContext context = new();
 
-            return subjectsContext?.subjects?.ToList()!;
+            return context?.Subjects?.ToList()!;
         }
     }
 }

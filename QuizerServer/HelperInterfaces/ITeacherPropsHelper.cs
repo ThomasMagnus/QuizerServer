@@ -4,8 +4,8 @@ namespace QuizerServer.HelperInterfaces
 {
     public interface ITeacherPropsHelper
     {
-        public Dictionary<string, string[]> GetTeacherProps();
-        public void DeleteSubject(string props, int teacherId);
-        public void DeleteGroup(string groupName, string subjectName, int teacherId);
+        public Task<Dictionary<string, string[]>> GetTeacherProps();
+        public Task DeleteSubject(string props, int teacherId);
+        public Task DeleteGroup(string groupName, string subjectName, int teacherId);
     }
 }

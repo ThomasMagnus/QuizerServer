@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.EntityFrameworkCore;
 using Quizer.Context;
 using Quizer.Models;
 using System.Text.Json;
@@ -11,7 +12,6 @@ namespace Quizer.Controllers
     {
         IMemoryCache _cache;
         ApplicationContext _context;
-
         public UserPage(IMemoryCache cache, ApplicationContext context)
         {
             _cache = cache;
@@ -24,23 +24,22 @@ namespace Quizer.Controllers
         {
             RedirectToAction("UserData", "UserPage");
         }
-
         public IActionResult UserData()
         {
             return Json("Hello, user!");
         }
 
         [HttpGet]
-        public IActionResult GetSubjects()
+        [Route("[controller]/GetSubjects")]
+        public async Task<IActionResult> GetSubjects()
         {
             _cache.TryGetValue(123, out List<Subjects>? subjects);
 
             if (subjects is null)
             {
-                using SubjectsContext subjectsContext = new();
                 try
                 {
-                    subjects = subjectsContext?.subjects?.ToList();
+                    subjects = await _context.Subjects.ToListAsync();
                     _cache.Set(123, subjects);
                     return Json(subjects);
                 }
@@ -50,7 +49,6 @@ namespace Quizer.Controllers
                     return Json("Ошибка запроса");
                 }
             }
-
             return Json(subjects);
         }
 
