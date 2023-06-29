@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "g6GNRCqhFdOSvQFISZAqd5XIKm1OXJc22aBGq20r11hHoOWo5C36fIEwbecGR5scwNq8tlosKFdPcmlWvjLDsQ==",
+  "dgSpecHash": "4vBrFN1tZ1cP6kQg/ja1EnuagTNHR8LgFG6XM1hsWRnOzF7iwz+aRzvmK9AYHBqWdGZPu6n6f4p/dHNoV0sAWA==",
   "success": true,
   "projectFilePath": "C:\\Users\\emmag\\source\\repos\\QuizerServer\\QuizerServer\\QuizerServer.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\emmag\\.nuget\\packages\\mediatr\\12.0.1\\mediatr.12.0.1.nupkg.sha512",
+    "C:\\Users\\emmag\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
     "C:\\Users\\emmag\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\7.0.5\\microsoft.aspnetcore.authentication.jwtbearer.7.0.5.nupkg.sha512",
     "C:\\Users\\emmag\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\emmag\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.5\\microsoft.entityframeworkcore.7.0.5.nupkg.sha512",

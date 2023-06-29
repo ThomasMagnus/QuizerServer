@@ -15,6 +15,10 @@ builder.Services.AddScoped<ISubjectsProps, SubjectsProps>();
 string? connectionString = builder.Configuration.GetConnectionString("ConnectionStrings");
 
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseNpgsql(connectionString));
+builder.Services.AddMediatR(options =>
+{
+    options.RegisterServicesFromAssemblies(typeof(Program).Assembly);
+});
 
 builder.Logging.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logget.txt"));
 

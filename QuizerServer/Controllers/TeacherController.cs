@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -7,6 +8,7 @@ using Quizer.IServices;
 using Quizer.Models;
 using Quizer.RequestBody;
 using QuizerServer.HelperClasses;
+using QuizerServer.Requests.UsersRequests;
 using System.Text.Json;
 using static System.Console;
 using static System.String;
@@ -17,29 +19,26 @@ namespace Quizer.Controllers
     {
         private readonly JwtSettings? _jwtSettings;
         private readonly ILogger<TeacherController> _logger;
-        private Lazy<TeacherPropsHelper>? _teacherPropsHelper = new Lazy<TeacherPropsHelper>();
-        private ISubjectsProps _subjectsProps;
-        private GroupsServices? groupsServices;
+        private readonly Lazy<TeacherPropsHelper>? _teacherPropsHelper = new Lazy<TeacherPropsHelper>();
+        private readonly ISubjectsProps _subjectsProps;
 
-        private ApplicationContext _context;
+        private readonly ApplicationContext _context;
 
         public TeacherController(IOptions<JwtSettings> jwtSettings, ILogger<TeacherController> logger, ISubjectsProps subjectsProps, 
             ApplicationContext context) => 
             (_jwtSettings, _logger, _subjectsProps, _context) = (jwtSettings?.Value, logger, subjectsProps, context);
 
         [HttpPost, Route("Teacher/Index")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromServices] ISender sender)
         {
             try
             {
                 Teacher? data = await HttpContext.Request.ReadFromJsonAsync<Teacher>();
 
-                Teacher? teacher = await _context.Teachers.Include(t => t.Tasks)
-                                                          .FirstOrDefaultAsync(
-                                                                x => x.fname!.ToLower().Trim() == data!.fname!.ToLower().Trim() &&
-                                                                x.lname!.ToLower().Trim() == data.lname!.ToLower().Trim() &&
-                                                                x.login!.ToLower().Trim() == data.login!.ToLower().Trim() &&
-                                                                x.password == data.password);
+                Teacher? teacher = await sender.Send(new TeacherQuery(data!.fname!.ToLower().Trim(),
+                                                                        data.lname!.ToLower().Trim(),
+                                                                        data.login!.ToLower().Trim(),
+                                                                        data.password));
 
                 if (teacher is null)
                 {
@@ -96,7 +95,7 @@ namespace Quizer.Controllers
             Dictionary<string, string>? data = JsonSerializer.Deserialize<Dictionary<string, string>>(value);
             if (data is null) return Json("Данные не получены");
 
-            _teacherPropsHelper!.Value.ContextName = new ApplicationContext();
+            _teacherPropsHelper!.Value.ContextName = _context;
 
             if (HttpContext.Request.Path == "/teacher/deleteSubject")
             {
@@ -121,16 +120,12 @@ namespace Quizer.Controllers
 
             try
             {
-                using TeacherPropsContext teacherPropsContext = new();
+                IQueryable<Subjects> subjects = _context.Subjects;
+                IQueryable<Groups> groups = _context.Groups;
 
-                groupsServices = new() { db = new ApplicationContext() };
-                
-                List<Subjects>? subjectsList = await _context?.Subjects?.ToListAsync()!;
-                List<Groups>? groupsList = await groupsServices.EntityLIst();
+                Subjects? subject = await subjects.FirstOrDefaultAsync(x => x.Name!.ToLower() == data!.subject!.ToLower());
 
-                Subjects? subjects = subjectsList.FirstOrDefault(x => x.Name?.ToLower() == data?.subject?.ToLower());
-
-                if (subjects is null) {
+                if (subject is null) {
                     WriteLine("Предмет не найден");
                     return Json(new
                     {
@@ -142,32 +137,31 @@ namespace Quizer.Controllers
                 List<int> result = new List<int>();
 
                 foreach (string item in data!.groups!) {
-                    Groups? groups = groupsList!.FirstOrDefault(x => x.Name?.Replace(" ", "") == item.ToUpper());
+                    Groups? group = await groups!.FirstOrDefaultAsync(x => x.Name!.Replace(" ", "") == item.ToUpper());
 
-                    if (groups is null) return Json(new {
+                    if (group is null) return Json(new {
                         statusCode = StatusCode(404),
                         message = $"Группа: {item} не найдена!",
                     });
 
-                    result.Add(groups.Id);
+                    result.Add(group.Id);
                 }
 
-                await teacherPropsContext.AddAsync(new TeacherProps
+                await _context.AddAsync(new TeacherProps
                 {
                     teacherid = data!.teacherId,
-                    subjectsid = subjects!.Id,
+                    subjectsid = subject!.Id,
                     groupsid = result.ToArray(),
                 });
                 
-                await teacherPropsContext.SaveChangesAsync();
+                await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
                 WriteLine(ex.Message);
             }
 
-            _teacherPropsHelper!.Value.ContextName = new ApplicationContext();
-
+            _teacherPropsHelper!.Value.ContextName = _context;
             _teacherPropsHelper!.Value.teacherId = int.Parse((data?.teacherId)?.ToString()!);
             Dictionary<string, string[]> teacherProps = await _teacherPropsHelper!.Value.GetTeacherProps();
 
@@ -194,7 +188,7 @@ namespace Quizer.Controllers
                 _logger.LogError("Ошибка на сервере: {0}", ex.Message);
 
                 return Json(new { 
-                    statusCode = StatusCode(404),
+                    statusCode = StatusCode(500),
                     message = "Произошла ошибка на сервере при получении предметов!"
                 });
             }
@@ -205,28 +199,27 @@ namespace Quizer.Controllers
         {
             try
             {
-                ApplicationContext applicationContext = new();
-
-                Groups? groups = await applicationContext.Groups
+                Groups? groups = await _context.Groups
                                                .FirstOrDefaultAsync(x => x.Name!.ToLower().Trim() == groupName.ToLower().Trim());
 
                 if (groups is null) return Json("Группа не найдена!");
 
-                Subjects? subjects = await applicationContext.Subjects
+                Subjects? subjects = await _context.Subjects
                                                    .FirstOrDefaultAsync(x => x.Name!.ToLower().Trim() == subjectName.ToLower().Trim());
+             
                 if (subjects is null) return Json("Предмет не найден!");
 
                 List<Tasks> tasks = await _context.Tasks
                                                   .Where(x => x.teacherid == teacherId && x.subjectid == subjects.Id && x.groupid == groups.Id)
                                                   .ToListAsync();
 
-                return Json(tasks.AsReadOnly());
+                return Json(tasks);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
                 _logger.LogError(ex.StackTrace);
-                return Json("Что-то пошло не так");
+                return StatusCode(500);
             }
         }
     }

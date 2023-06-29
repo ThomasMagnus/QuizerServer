@@ -7,7 +7,7 @@ using QuizerServer.HelperInterfaces;
 
 namespace QuizerServer.HelperClasses
 {
-    public class TokenSecurity : TokenCreator
+    public class TokenSecurity : ITokenCreator
     {
         private readonly JwtSettings _options;
         public ClaimsCreator _claimsCreator;

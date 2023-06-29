@@ -17,15 +17,13 @@ namespace QuizerServer.HelperClasses
         public async Task<Dictionary<string, string[]>> GetTeacherProps()
         {
             Dictionary<string, List<string>> teacherProps = new();
-            using TeacherContext teacherContext = new();
 
             List<TeacherProps>? teacherPropsList = await _applicationContext!.TeacherProps
                                                                             .Include(x => x.Subjects)
                                                                             .Where(x => x.teacherid == teacherId).OrderBy(x => x.id)
                                                                             .ToListAsync();
 
-            List<Groups> groupsList = new GroupsServices() { db = _applicationContext }.EntityLIst().Result;
-            List<string>? groups = new();
+            IQueryable<Groups> groupsList = _applicationContext.Groups;
 
             Dictionary<string, string[]> keyValuePairs = new Dictionary<string, string[]>();
 
@@ -33,9 +31,10 @@ namespace QuizerServer.HelperClasses
             {
                 string[] groupsArray = item.groupsid!
                                             .SelectMany(x => groupsList
-                                                            .Where(y => x == y?.Id)
+                                                            .Where(y => x == y.Id)
                                                             .Select(x => x.Name))
                                             .ToArray()!;
+
                 keyValuePairs[item.Subjects?.Name!] = groupsArray;
             }
             return keyValuePairs;
@@ -43,7 +42,7 @@ namespace QuizerServer.HelperClasses
 
         public async Task DeleteSubject(string props, int teacherId)
         {
-            Subjects? subjects = _applicationContext?.Subjects?.AsQueryable().FirstOrDefault(x => x.Name == props);
+            Subjects? subjects = _applicationContext?.Subjects?.FirstOrDefault(x => x.Name == props);
             
             TeacherProps? teacherProps = await _applicationContext!.TeacherProps
                                                                    .Include(x => x.Subjects)               
@@ -59,17 +58,13 @@ namespace QuizerServer.HelperClasses
         }
         public async Task DeleteGroup(string groupName, string subjectName, int teacherId)
         {
-            GroupsServices groupsServices = new GroupsServices() { db = _applicationContext };
-
             Subjects? subjects = await _applicationContext!.Subjects
-                                                     .AsQueryable()
                                                      .FirstOrDefaultAsync(x => x.Name == subjectName);
 
-            List<Groups> groupsList = await groupsServices.EntityLIst();
             TeacherProps? teacherProps = await _applicationContext!.TeacherProps
                                                              .FirstOrDefaultAsync(x => x!.subjectsid == subjects!.Id && x.teacherid == teacherId);
 
-            Groups? groups = await groupsServices.GetEntity(new Dictionary<string, object> { { "name", groupName } });
+            Groups? groups = await _applicationContext.Groups.FirstOrDefaultAsync(x => x.Name == groupName);
 
             teacherProps!.groupsid = teacherProps.groupsid?
                                                  .Where(x => x != groups?.Id)

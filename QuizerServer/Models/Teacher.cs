@@ -21,11 +21,4 @@ namespace Quizer.Models
         public virtual ICollection<TeacherProps>? TeacherProps { get; set; }
     }
 
-    public class TeacherContext : ApplicationContext
-    {
-        public DbSet<Teacher>? Teachers { get; set; }
-
-        public TeacherContext()
-            : base() { }
-    }
 }

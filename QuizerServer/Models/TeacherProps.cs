@@ -20,12 +20,4 @@ namespace Quizer.Models
         [ForeignKey("subjectsid")]
         public Subjects? Subjects { get; set; }
     }
-
-    public class TeacherPropsContext : ApplicationContext
-    {
-        public DbSet<TeacherProps> TeacherProps { get; set; }
-
-        public TeacherPropsContext()
-            : base() { }
-    }
 }

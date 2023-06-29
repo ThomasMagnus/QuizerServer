@@ -1,6 +1,6 @@
 ﻿namespace QuizerServer.HelperInterfaces
 {
-    public interface TokenCreator
+    public interface ITokenCreator
     {
         public string GetToken();
     }

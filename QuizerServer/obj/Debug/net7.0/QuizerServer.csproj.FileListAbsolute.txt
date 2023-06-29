@@ -37,3 +37,5 @@ C:\Users\emmag\source\repos\QuizerServer\QuizerServer\obj\Debug\net7.0\refint\Qu
 C:\Users\emmag\source\repos\QuizerServer\QuizerServer\obj\Debug\net7.0\QuizerServer.pdb
 C:\Users\emmag\source\repos\QuizerServer\QuizerServer\obj\Debug\net7.0\QuizerServer.genruntimeconfig.cache
 C:\Users\emmag\source\repos\QuizerServer\QuizerServer\obj\Debug\net7.0\ref\QuizerServer.dll
+C:\Users\emmag\source\repos\QuizerServer\QuizerServer\bin\Debug\net7.0\MediatR.dll
+C:\Users\emmag\source\repos\QuizerServer\QuizerServer\bin\Debug\net7.0\MediatR.Contracts.dll

@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Quizer.Models;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Quizer.Context;
-using Microsoft.AspNetCore.Authorization;
+using Quizer.Models;
 using QuizerServer.HelperClasses;
-using Microsoft.EntityFrameworkCore;
+using QuizerServer.Requests.UsersRequests;
 
 namespace Quizer.Controllers;
 
@@ -15,7 +17,7 @@ public class Authorization : Controller
     private readonly JwtSettings _options;
     private string? _token;
     private readonly ILogger<Authorization> _logger;
-    private ApplicationContext _context;
+    private readonly ApplicationContext _context;
 
     public Authorization(IOptions<JwtSettings> options, ILogger<Authorization> logger, ApplicationContext context)
     {
@@ -25,62 +27,41 @@ public class Authorization : Controller
     }
 
     [HttpPost, Route("Auth")]
-    public async Task<IActionResult>? Auth()
+    public async Task<IActionResult>? Auth([FromServices] ISender sender)
     {
-        UsersServices usersServices = new() { db = _context };
 
         try
         {
             Users? userData = await HttpContext.Request.ReadFromJsonAsync<Users>();
 
-            Users? person = await usersServices.GetEntity(new Dictionary<string, object>
+            Users? person = await sender.Send(new GetUserQuery(
+                userData?.Firstname,
+                userData?.Lastname,
+                userData?.Patronymic,
+                (int)userData!.GroupsId!,
+                userData.Password));
+
+            if (person is null) return Json(new { status = false, text = "Пользователь не найден" });
+
+            string username = $"{person?.Firstname?.Replace(" ", "")} " +
+                                                $"{person?.Lastname?.Replace(" ", "")}";
+
+            TokenSecurity tokenSecurity = new(_options, username);
+
+            _token = tokenSecurity.GetToken();
+
+            var response = new
             {
-                    {"firstname", userData?.Firstname?.ToLower()!},
-                    {"lastname", userData?.Lastname?.ToLower()!},
-                    {"patronymic", userData?.Patronymic?.ToLower()!},
-                    {"password", int.Parse(userData?.Password!)},
-                    {"group", userData?.GroupsId ?? '1'}
-            });
-            
-            if (person is null) {
-                            
-                var response = new
-                {
-                    status = false,
-                    text = "Пользователь не найден"
-                };
+                accessToken = _token,
+                username = tokenSecurity._claimsCreator.GetClaims().Name,
+                group = person?.Groups?.Name,
+                groupId = person?.Groups?.Id,
+                id = person?.Id
+            };
 
-                return Json(response);
-            }
-            else
-            {
-                GroupsServices groupsServices = new GroupsServices { db = _context };
+            Sessions.CreateSession(person?.Id, person?.Firstname, person?.Lastname, DateTime.Now);
 
-                List<Groups> groupsList = await groupsServices.EntityLIst();
-                
-                string username = $"{person?.Firstname?.Replace(" ", "")} " +
-                                                    $"{person?.Lastname?.Replace(" ", "")}";
-
-                List<Subjects> subjectsList = await _context.Subjects!.ToListAsync();
-                TokenSecurity tokenSecurity = new(_options, username);
-
-                _token = tokenSecurity.GetToken();
-
-                Groups? groups = groupsList?.FirstOrDefault(x => x?.Id == userData?.GroupsId);
-
-                var response = new
-                {
-                    accessToken = _token,
-                    username = tokenSecurity._claimsCreator.GetClaims().Name,
-                    group = groups?.Name,
-                    groupId = groups?.Id,
-                    id = person?.Id
-                };
-
-                Sessions.CreateSession(person?.Id, person?.Firstname, person?.Lastname, DateTime.Now);
-
-                return Json(response);
-            }
+            return Json(response);
 
         }
         catch (Exception ex)
@@ -96,7 +77,7 @@ public class Authorization : Controller
     }
 
     [HttpGet, Route("GetGroups")]
-    public async Task<JsonResult>? GetGroups()
+    public JsonResult GetGroups()
     {
         try
         {

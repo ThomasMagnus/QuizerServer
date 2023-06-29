@@ -1,17 +1,16 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Quizer.Context;
 using Quizer.Models;
-using System.Text.Json;
 
 namespace Quizer.Controllers
 {
     public class UserPage : Controller
     {
-        IMemoryCache _cache;
-        ApplicationContext _context;
+        private readonly IMemoryCache _cache;
+        private readonly ApplicationContext _context;
         public UserPage(IMemoryCache cache, ApplicationContext context)
         {
             _cache = cache;
@@ -45,43 +44,11 @@ namespace Quizer.Controllers
                 }
                 catch (Exception ex)
                 {
-                    Console.Write(ex);
+                    Console.WriteLine(ex);
                     return Json("Ошибка запроса");
                 }
             }
             return Json(subjects);
-        }
-
-        [HttpPost]
-        public IActionResult GetUserProps([FromBody] JsonElement value)
-        {
-            using (SessionsContext sessionContext = new())
-            using (ApplicationContext applicationContext = new())
-
-            try
-            {
-                List<Sessions>? sessions = sessionContext?.Sessions?.ToList();
-                Sessions? session = sessions?.FirstOrDefault(x => x.Id == 3);
-                GroupsServices groupsServices = new() { db = applicationContext };
-
-                string? groupName = session?.User?.Groups?.Name;
-                Console.WriteLine(groupName);
-
-                    var userProperty = new
-                {
-                    firstname = session?.UserFirstname,
-                    lastname = session?.UserLastname,
-                    group = groupName,
-                    id = session?.Id,
-                };
-
-                return Json(userProperty);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return Json(ex);
-            }
         }
 
         [HttpGet]
@@ -93,10 +60,9 @@ namespace Quizer.Controllers
             {
                 try
                 {
-                    using ApplicationContext applicationContext = new();
-                    tasks = applicationContext.Tasks.ToList()
-                        .Where(x => x.subjectid == subjectId && x.groupid == groupId)
-                        .OrderByDescending(x => x?.Putdate).ToList();
+                    tasks = _context.Tasks
+                                        .Where(x => x.subjectid == subjectId && x.groupid == groupId)
+                                        .OrderByDescending(x => x.Putdate).ToList();
 
                     _cache.Set(subjectId, tasks, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(10)));
 
@@ -104,7 +70,8 @@ namespace Quizer.Controllers
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.ToString());
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(ex.StackTrace);
                     return Json("Произошла ошибка в запросе Tasks");
                 }
             }

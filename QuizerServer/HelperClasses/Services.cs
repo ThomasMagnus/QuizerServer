@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Quizer.Context;
 using Quizer.Models;
+using QuizerServer.HelperInterfaces;
 
 namespace QuizerServer.HelperClasses
 {
@@ -16,4 +17,5 @@ namespace QuizerServer.HelperClasses
             return await db.Users.ToListAsync();
         }
     }
+
 }

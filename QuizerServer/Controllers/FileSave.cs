@@ -2,7 +2,6 @@
 using Quizer.Context;
 using Quizer.Models;
 using Quizer.RequestBody;
-using Quizer.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace Quizer.Controllers
